@@ -1,4 +1,4 @@
-.idea
+heroku create -a example-app.idea
 node_modules
 build
 data
