@@ -1,3 +1,6 @@
+/**
+ * @file creates a UserSchema for users in the mongodb database 
+ */
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
