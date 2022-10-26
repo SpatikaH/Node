@@ -30,27 +30,21 @@ import MessageController from "./controllers/MessageController";
 import express, {Request, Response} from 'express';
 import mongoose from "mongoose";
 
-const cors = require('cors')
+
+mongoose.connect('mongodb+srv://nodeuser:nodeuser123@cluster0.m3vm6ie.mongodb.net/fse?retryWrites=true&w=majority');
+
 const app = express();
-app.use(cors());
 app.use(express.json());
-
-
-const options = {
- useNewUrlParser: true,
- useUnifiedTopology: true,
- autoIndex: false,
- maxPoolSize: 10,
- serverSelectionTimeoutMS: 5000,
- socketTimeoutMS: 45000,
- family: 4
-}
-
-mongoose.connect('mongodb+srv://nodeuser:nodeuser123@cluster0.m3vm6ie.mongodb.net/fse?authSource=admin', options);
 
 function sayHello (req: Request, res: Response) {
     res.send('Welcome to Foundation of Software Engineering!');
 }
+ app.get('/', sayHello);
+ app.get('/hello', sayHello);
+
+ app.get('/add/:a/:b', (req, res) => {
+    res.send(req.params.a + req.params.b);
+})
 
 const userController = UserController.getInstance(app);
 const tuitController = TuitController.getInstance(app);
@@ -59,8 +53,6 @@ const followController = FollowController.getInstance(app);
 const bookmarkController = BookmarkController.getInstance(app);
 const messagingController = MessageController.getInstance(app);
 
- app.get('/', sayHello);
- app.get('/hello', sayHello);
 /**
  * Start a server listening at port 4000 locally
  * but use environment variable PORT on Heroku if available.
