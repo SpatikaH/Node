@@ -46,7 +46,7 @@ const options = {
  family: 4
 }
 
-mongoose.connect('mongodb://localhost:27017/fse', options);
+mongoose.connect('mongodb+srv://nodeuser:nodeuser123@cluster0.m3vm6ie.mongodb.net/fse', options);
 
 function sayHello (req: Request, res: Response) {
     res.send('Welcome to Foundation of Software Engineering!');
