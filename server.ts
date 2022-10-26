@@ -22,9 +22,7 @@ import UserController from "./controllers/UserController";
 
 import BookmarkController from "./controllers/BookmarkController";
 
-
 import FollowController from "./controllers/FollowController";
-
 
 import LikeController from "./controllers/LikeController";
 
