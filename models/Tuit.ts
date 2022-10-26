@@ -1,13 +1,20 @@
+/**
+ * @file Represents Tuit representing the tuits posted by a user
+ */
 import User from "./User";
 
+/**
+ * @typedef Tuit Represents a tuit posted by a user
+ * @property {string} tuit is the message string in the user's tuit
+ * @property {Date} postedOn is the date at which the tuit was posted
+ * @property {User} postedBy is the user posting the tuit
+ */
 export default class Tuit {
-    private id: string;
     private tuit: string = '';
     private postedOn: Date = new Date();
     private postedBy: User | null = null;
 
     constructor(id: string, tuit: string, postedOn: Date) {
-        this.id = id;
         this.tuit = tuit;
         this.postedOn = postedOn;
         this.postedBy = null;

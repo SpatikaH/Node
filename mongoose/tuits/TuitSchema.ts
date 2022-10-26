@@ -1,3 +1,6 @@
+/**
+ * @file creates a TuitSchema for tuits in the mongodb database 
+ */
 import mongoose from "mongoose";
 
 const TuitSchema = new mongoose.Schema(
