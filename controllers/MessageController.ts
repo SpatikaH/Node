@@ -33,7 +33,7 @@
              app.post("/users/:uid1/sends/:uid2", MessageController.messagingController.createMessage);
              app.delete("/message/:mid", MessageController.messagingController.deleteMessage);
              app.get("/messages/:to/received/:from", MessageController.messagingController.checkMessagesReceivedFromUser);
-             app.get("/messages/:from/sent/:to", MessageController.messagingController.checkMessagesReceivedFromUser);
+             app.get("/messages/:from/sent/:to", MessageController.messagingController.checkMessagesSentByUser);
          }
          return MessageController.messagingController;
      }

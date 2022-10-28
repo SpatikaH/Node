@@ -60,7 +60,7 @@ export default class UserController implements UserControllerI {
     * body formatted as JSON containing the user that matches the user ID
     */       
     findUserById = (req: Request, res: Response) =>
-    UserController.userDao.findUserById(req.params.userid)
+    UserController.userDao.findUserById(req.params.uid)
             .then(user => res.json(user));
 
     /**
@@ -83,7 +83,7 @@ export default class UserController implements UserControllerI {
     * on whether deleting a user was successful or not
     */
     deleteUser = (req: Request, res: Response) =>
-    UserController.userDao.deleteUser(req.params.userid)
+    UserController.userDao.deleteUser(req.params.uid)
             .then(status => res.json(status));
     /**
     * Modifies an existing user instance
@@ -93,7 +93,7 @@ export default class UserController implements UserControllerI {
     * on whether updating a user was successful or not
     */
     updateUser = (req: Request, res: Response) =>
-    UserController.userDao.updateUser(req.params.userid, req.body)
+    UserController.userDao.updateUser(req.params.uid, req.body)
             .then(status => res.json(status));
 }
 
