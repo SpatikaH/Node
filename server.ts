@@ -5,45 +5,46 @@
  *     <li>users</li>
  *     <li>tuits</li>
  *     <li>likes</li>
+ *     <li>follows</li>
+ *     <li>messages</li>
+ *     <li>bookmarks</li>
  * </ul>
- * 
+ *
  * Connects to a remote MongoDB instance hosted on the Atlas cloud database
  * service
  */
-import express, {Request, Response} from 'express';
-import CourseController from "./controllers/CourseController";
-import UserController from "./controllers/UserController";
-import TuitController from "./controllers/TuitController";
-import LikeController from "./controllers/LikeController";
+
+import express from 'express';
 import mongoose from "mongoose";
+import UserController from "./controllers/users/UserController";
+import bodyParser from "body-parser";
+import TuitController from "./controllers/tuits/TuitController";
+import LikeController from "./controllers/likes/LikeController";
+import BookmarkController from "./controllers/bookmarks/BookmarkController";
+import MessageController from "./controllers/messages/MessageController";
+import FollowController from "./controllers/follows/FollowController";
 var cors = require('cors')
 
-// build the connection string
-const PROTOCOL = "mongodb+srv";
-const DB_USERNAME = process.env.DB_USERNAME;
-const DB_PASSWORD = process.env.DB_PASSWORD;
-const HOST = "cluster0.m8jeh.mongodb.net";
-const DB_NAME = "myFirstDatabase";
-const DB_QUERY = "retryWrites=true&w=majority";
-const connectionString = `${PROTOCOL}://${DB_USERNAME}:${DB_PASSWORD}@${HOST}/${DB_NAME}?${DB_QUERY}`;
-// connect to the database
-mongoose.connect(connectionString);
-
+mongoose.connect('mongodb+srv://nodeuser:nodeuser123@cluster0.m3vm6ie.mongodb.net/fse?retryWrites=true&w=majority');
 const app = express();
 app.use(express.json());
+app.use(bodyParser.json())
 app.use(cors());
 
-app.get('/', (req: Request, res: Response) =>
-    res.send('Welcome!'));
+app.get('/hello', (req, res) =>
+    res.send('Hello World!'));
 
-app.get('/add/:a/:b', (req: Request, res: Response) =>
-    res.send(req.params.a + req.params.b));
+app.get('/add/:a/:b', (req, res) => {
+    res.send(req.params.a + req.params.b);
+})
 
-// create RESTful Web service API
-const courseController = new CourseController(app);
+
 const userController = UserController.getInstance(app);
 const tuitController = TuitController.getInstance(app);
-const likesController = LikeController.getInstance(app);
+const likeController = LikeController.getInstance(app);
+const bookmarkController = BookmarkController.getInstance(app);
+const messageController = MessageController.getInstance(app);
+const followController = FollowController.getInstance(app);
 
 /**
  * Start a server listening at port 4000 locally
