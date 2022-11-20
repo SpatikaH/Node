@@ -24,9 +24,21 @@ import BookmarkController from "./controllers/bookmarks/BookmarkController";
 import MessageController from "./controllers/messages/MessageController";
 import FollowController from "./controllers/follows/FollowController";
 var cors = require('cors')
-
+const session = require("express-session");
 mongoose.connect('mongodb+srv://nodeuser:nodeuser123@cluster0.m3vm6ie.mongodb.net/fse?retryWrites=true&w=majority');
 const app = express();
+let sess = {
+    secret: process.env.SECRET,
+    cookie: {
+        secure: false
+    }
+ }
+ 
+ if (process.env.ENV === 'PRODUCTION') {
+    app.set('trust proxy', 1) // trust first proxy
+    sess.cookie.secure = true // serve secure cookies
+ }
+ 
 app.use(express.json());
 app.use(bodyParser.json())
 app.use(cors());
@@ -52,3 +64,4 @@ const followController = FollowController.getInstance(app);
  */
 const PORT = 4000;
 app.listen(process.env.PORT || PORT);
+

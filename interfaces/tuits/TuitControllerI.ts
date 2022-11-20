@@ -33,7 +33,7 @@ export default interface TuitControllerI {
      * @param {Response} res Represents response to client, including the
      * body formatted as JSON arrays containing the tuit objects
      */
-    findAllTuitsByUser (req: Request, res: Response): void;
+    findTuitsByUser (req: Request, res: Response): void;
 
     /**
      * @param {Request} req Represents request from client, including path
