@@ -67,11 +67,23 @@ export default class TuitDao implements TuitDaoI {
 
     /**
      * Uses TuitModel to retrieve single tuit from tuits collection
-     * @param {string} username User whose tuits posted are to be retrieved
+     * @param {string} uid User's PK whose tuits posted are to be retrieved
      * @returns Promise To be notified when the tuits are retrieved from the database
      */
-    async findTuitsByUser(username: string): Promise<any> {
-        return TuitModel.find({postedBy: username});
+    async findTuitsByUser(uid: string): Promise<any> {
+        return await TuitModel.find({postedBy: uid})
+        .populate("postedBy")
+        .exec();
+    }
+
+    /**
+     * Creates a tuit instance by a user from the database.
+     * @param {Tuit} tid Tuit's pk
+     * @param {string} uid User's pk
+     * @returns Created tuit
+     */
+     async createTuitByUser(uid: string, tuit: Tuit): Promise<Tuit> {
+        return await TuitModel.create({...tuit, postedBy: uid});
     }
 
     /**

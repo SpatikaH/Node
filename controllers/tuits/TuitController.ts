@@ -36,6 +36,7 @@ export default class TuitController implements TuitControllerI{
             TuitController.tuitController = new TuitController();
             app.get("/tuits", TuitController.tuitController.findAllTuits);
             app.get("/users/:username/tuits", TuitController.tuitController.findAllTuitsByUser);
+            app.get('/users/:uid/tuits', TuitController.tuitController.findTuitsByUser);
             app.get("/tuits/:uid", TuitController.tuitController.findTuitById);
             app.post("/users/tuits", TuitController.tuitController.createTuitByUser);
             app.put("/tuits/:uid", TuitController.tuitController.updateTuit);
@@ -67,6 +68,20 @@ export default class TuitController implements TuitControllerI{
     findAllTuitsByUser = (req: Request, res: Response) =>
         TuitController.tuitDao.findTuitsByUser(req.params.username)
             .then(tuits => {res.json(tuits)});
+
+    /**
+    * Retrieves all tuits from the database for a particular user and returns
+    * an array of tuits.
+    * @param {Request} req Represents request from client
+    * @param {Response} res Represents response to client, including the
+    * body formatted as JSON arrays containing the tuit objects
+    */        
+    findTuitsByUser = (req: Request, res: Response) => {
+        // @ts-ignore
+        let userId = req.params.uid === "me" && req.session['profile'] ? req.session['profile']._id : req.params.uid;
+        TuitController.tuitDao.findTuitsByUser(userId)
+        .then(tuits => res.json(tuits));
+    }
 
    /**
     * @param {Request} req Represents request from client, including path
