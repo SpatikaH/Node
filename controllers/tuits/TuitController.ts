@@ -66,8 +66,16 @@ export default class TuitController implements TuitControllerI{
     * body formatted as JSON arrays containing the tuit objects
     */
     findAllTuitsByUser = (req: Request, res: Response) =>
-        TuitController.tuitDao.findTuitsByUser(req.params.username)
-            .then(tuits => {res.json(tuits)});
+    {   
+        let userId = req.params.uid === "me"
+        // @ts-ignore
+        && req.session['profile'] ?
+        // @ts-ignore
+        req.session['profile']._id :
+        req.params.uid;
+        TuitController.tuitDao.findTuitsByUser(userId)
+        .then((tuits: any) => res.json(tuits));
+    }
 
     /**
     * Retrieves all tuits from the database for a particular user and returns
@@ -101,9 +109,16 @@ export default class TuitController implements TuitControllerI{
     * body formatted as JSON containing the new tuit that was inserted in the
     * database
     */
-    createTuitByUser = (req: Request, res: Response) =>
-        TuitController.tuitDao.createTuit(req.body)
-            .then(tuit => res.json(tuit));
+    createTuitByUser = (req: Request, res: Response) => {
+        let userId = req.params.uid === "me"
+        // @ts-ignore
+        && req.session['profile'] ?
+        // @ts-ignore
+        req.session['profile']._id :
+        req.params.uid;
+        TuitController.tuitDao.createTuitByUser(userId, req.body)
+        .then((tuit: any) => res.json(tuit));
+    }
 
     /**
     * @param {Request} req Represents request from client, including path

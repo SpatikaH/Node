@@ -71,4 +71,12 @@ export default interface TuitDaoI {
      */
     deleteTuitsByUsername(postedBy: string): Promise<any>;
 
+    /**
+     * Updates the likes of a tuit in the database.
+     * @param {string} tid Primary key of tuit to be modified
+     * @param {string} newStats New status representing number of likes of tuit to be modified
+     * @returns Promise To be notified when tuit is updated in the database
+     */
+    updateLikes(tid: string, newStats: any): Promise<any>;
+
 }
