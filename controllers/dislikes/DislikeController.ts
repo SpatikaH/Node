@@ -1,6 +1,6 @@
 
  /**
-  * @file Controller RESTful Web service API for likes resource
+  * @file Controller RESTful Web service API for dislikes resource
   */
   import {Express, Request, Response} from "express";
   import DislikeDao from "../../daos/dislikes/DislikeDao";
@@ -9,20 +9,20 @@
   import DislikeControllerI from "../../interfaces/dislikes/DislikeControllerI";
 
   /**
-   * @class TuitController Implements RESTful Web service API for likes resource.
+   * @class TuitController Implements RESTful Web service API for dislikes resource.
    * Defines the following HTTP endpoints:
    * <ul>
-   *     <li>GET /api/users/:uid/likes to retrieve all the tuits liked by a user
+   *     <li>GET /api/users/:uid/dislikes to retrieve all the tuits liked by a user
    *     </li>
-   *     <li>GET /api/tuits/:tid/likes to retrieve all users that liked a tuit
+   *     <li>GET /api/tuits/:tid/dislikes to retrieve all users that liked a tuit
    *     </li>
-   *     <li>POST /api/users/:uid/likes/:tid to record that a user likes a tuit
+   *     <li>POST /api/users/:uid/dislikes/:tid to record that a user likes a tuit
    *     </li>
    *     <li>DELETE /api/users/:uid/unlikes/:tid to record that a user
    *     no londer likes a tuit</li>
    * </ul>
-   * @property {LikeDao} likeDao Singleton DAO implementing likes CRUD operations
-   * @property {LikeController} LikeController Singleton controller implementing
+   * @property {DisLikeDao} DislikeDao Singleton DAO implementing likes CRUD operations
+   * @property {DislikeController} DislikeController Singleton controller implementing
    * RESTful Web service API
    */
   export default class DislikeController implements DislikeControllerI {
@@ -101,9 +101,7 @@
                  const userAlreadyDislikedTuit = await DislikeController.dislikeDao.findUserDislikesTuit(userId, tid);
                  const howManyDislikedTuit = await DislikeController.dislikeDao.countHowManyDislikedTuit(tid);
                  const doesUserLikeTuit = await DislikeController.likeDao.findUserLikesTuit(userId, tid);
-                 //console.log("Dislike controller:  Number of dislikes: "+howManyDislikedTuit);
                  let tuit = await DislikeController.tuitDao.findTuitById(tid);
-                 //console.log("Dislike controller: Retrieved stats: "+tuit.stats);
                  if (userAlreadyDislikedTuit) {
                      await DislikeController.dislikeDao.userUndislikesTuit(userId, tid);
                      tuit.stats.dislikes = howManyDislikedTuit - 1;
@@ -115,7 +113,6 @@
                          tuit.stats.likes = tuit.stats.likes - 1;
                      }
                  }
-                 //console.log("Updating stats as: "+tuit.stats);
                  await DislikeController.tuitDao.updateLikes(tid, tuit.stats);
                  res.sendStatus(200);
              } catch (e) {

@@ -20,6 +20,7 @@ import UserController from "./controllers/users/UserController";
 import bodyParser from "body-parser";
 import TuitController from "./controllers/tuits/TuitController";
 import LikeController from "./controllers/likes/LikeController";
+import DislikeController from "./controllers/dislikes/DisLikeController";
 import BookmarkController from "./controllers/bookmarks/BookmarkController";
 import MessageController from "./controllers/messages/MessageController";
 import FollowController from "./controllers/follows/FollowController";
@@ -61,6 +62,7 @@ app.get('/add/:a/:b', (req, res) => {
 const userController = UserController.getInstance(app);
 const tuitController = TuitController.getInstance(app);
 const likeController = LikeController.getInstance(app);
+const dislikeController = DislikeController.getInstance(app);
 const bookmarkController = BookmarkController.getInstance(app);
 const messageController = MessageController.getInstance(app);
 const authenticationController = AuthenticationController(app);
