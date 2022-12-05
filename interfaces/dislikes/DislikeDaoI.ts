@@ -1,4 +1,4 @@
-import Dislike from "../../models/dislikes/Dislikes";
+import Dislike from "../../models/dislikes/Dislike";
 
  export default interface DislikeDaoI {
      findAllUsersThatDislikedTuit(tid: string): Promise<Dislike[]>;
