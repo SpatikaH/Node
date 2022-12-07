@@ -120,12 +120,12 @@ export default class LikeController implements LikeControllerI {
      * database
      */
     userTogglesTuitLikes = async (req: Request, res: Response) => {
-    const uid = req.params.uid;
-    const tid = req.params.tid;
-    // @ts-ignore
-    const profile = req.session['profile'];
-    const userId = uid === "me" && profile ?
-        profile._id : uid;
+        const uid = req.params.uid;
+        const tid = req.params.tid;
+        // @ts-ignore
+        const profile = req.session['profile'];
+        const userId = uid === "me" && profile ?
+            profile._id : uid;
     try {
     const userAlreadyLikedTuit = await LikeController.likeDao
         .findUserLikesTuit(userId, tid);
