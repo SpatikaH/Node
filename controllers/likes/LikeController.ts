@@ -38,11 +38,11 @@ export default class LikeController implements LikeControllerI {
     public static getInstance = (app: Express): LikeController => {
         if(LikeController.likeController === null) {
             LikeController.likeController = new LikeController();
-            app.get("/users/:uid/likes", LikeController.likeController.findAllTuitsLikedByUser);
-            app.get("/tuits/:tid/likes", LikeController.likeController.findAllUsersThatLikedTuit);
-            app.post("/users/:uid/likes/:tid", LikeController.likeController.userLikesTuit);
-            app.delete("/users/:uid/unlikes/:tid", LikeController.likeController.userUnlikesTuit);
-            app.put("/users/:uid/likes/:tid", LikeController.likeController.userTogglesTuitLikes);
+            app.get("/api/users/:uid/likes", LikeController.likeController.findAllTuitsLikedByUser);
+            app.get("/api/tuits/:tid/likes", LikeController.likeController.findAllUsersThatLikedTuit);
+            app.post("/api/users/:uid/likes/:tid", LikeController.likeController.userLikesTuit);
+            app.delete("/api/users/:uid/unlikes/:tid", LikeController.likeController.userUnlikesTuit);
+            app.put("/api/users/:uid/likes/:tid", LikeController.likeController.userTogglesTuitLikes);
         }
         return LikeController.likeController;
     }
@@ -71,16 +71,20 @@ export default class LikeController implements LikeControllerI {
         const uid = req.params.uid;
         // @ts-ignore
         const profile = req.session['profile'];
-        const userId = uid === "me" && profile ?
+        const userId = uid === 'me' && profile ?
         profile._id : uid;
+        if (userId === "me") {
+            res.json([])
+            return
+        }
 
         LikeController.likeDao.findAllTuitsLikedByUser(userId)
-        .then(likes => {
+            .then(likes => {
         const likesNonNullTuits =
-       likes.filter(like => like.tuit);
+            likes.filter(like => like.tuit);
         const tuitsFromLikes =
-       likesNonNullTuits.map(like => like.tuit);
-        res.json(tuitsFromLikes);
+            likesNonNullTuits.map(like => like.tuit);
+            res.json(tuitsFromLikes);
     });
 }
 

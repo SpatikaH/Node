@@ -59,8 +59,7 @@
          const user = req.body;
          const username = user.username;
          const password = user.password;
-         const existingUser = await userDao
-             .findUserByUsername(username);
+         const existingUser = await userDao.findUserByUsername(req.body.username);
          if (!existingUser) {
              res.sendStatus(403);
              return;
@@ -104,10 +103,10 @@
          res.sendStatus(200);
      }
  
-     app.post("/api/auth/login", login);
-     app.post("/api/auth/profile", profile);
-     app.post("/api/auth/logout", logout);
      app.post("/api/auth/signup", signup);
+     app.post("/api/auth/profile", profile);
+     app.post("/api/auth/login", login);
+     app.post("/api/auth/logout", logout);
  
  }
  

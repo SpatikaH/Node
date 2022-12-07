@@ -34,14 +34,13 @@ export default class TuitController implements TuitControllerI{
     public static getInstance = (app: Express): TuitController => {
         if(TuitController.tuitController === null) {
             TuitController.tuitController = new TuitController();
-            app.get("/tuits", TuitController.tuitController.findAllTuits);
-            app.get("/users/:username/tuits", TuitController.tuitController.findAllTuitsByUser);
-            app.get('/users/:uid/tuits', TuitController.tuitController.findTuitsByUser);
-            app.get("/tuits/:uid", TuitController.tuitController.findTuitById);
-            app.post("/users/tuits", TuitController.tuitController.createTuitByUser);
-            app.put("/tuits/:uid", TuitController.tuitController.updateTuit);
-            app.delete("/tuits/:uid", TuitController.tuitController.deleteTuit);
-            app.delete("/tuits/postedby/:postedby/delete", TuitController.tuitController.deleteTuitsByUsername);
+            app.get("/api/tuits", TuitController.tuitController.findAllTuits);
+            app.get("/api/users/:uid/tuits", TuitController.tuitController.findAllTuitsByUser);
+            app.get("/api/tuits/:uid", TuitController.tuitController.findTuitById);
+            app.post("/api/users/:uid/tuits", TuitController.tuitController.createTuitByUser);
+            app.put("/api/tuits/:uid", TuitController.tuitController.updateTuit);
+            app.delete("/api/tuits/:uid", TuitController.tuitController.deleteTuit);
+            app.delete("/api/tuits/postedby/:postedby/delete", TuitController.tuitController.deleteTuitsByUsername);
         }
         return TuitController.tuitController;
     }
@@ -73,22 +72,13 @@ export default class TuitController implements TuitControllerI{
         // @ts-ignore
         req.session['profile']._id :
         req.params.uid;
-        TuitController.tuitDao.findTuitsByUser(userId)
-        .then((tuits: any) => res.json(tuits));
-    }
-
-    /**
-    * Retrieves all tuits from the database for a particular user and returns
-    * an array of tuits.
-    * @param {Request} req Represents request from client
-    * @param {Response} res Represents response to client, including the
-    * body formatted as JSON arrays containing the tuit objects
-    */        
-    findTuitsByUser = (req: Request, res: Response) => {
-        // @ts-ignore
-        let userId = req.params.uid === "me" && req.session['profile'] ? req.session['profile']._id : req.params.uid;
-        TuitController.tuitDao.findTuitsByUser(userId)
-        .then(tuits => res.json(tuits));
+        if (userId === "me") {
+            // The client tried accessing a resource without logging in.
+            res.json([])
+            return
+        }
+        TuitController.tuitDao.findAllTuitsByUser(userId)
+            .then((tuits: any) => res.json(tuits));
     }
 
    /**

@@ -39,9 +39,11 @@
       public static getInstance = (app: Express): DislikeController => {
           if(DislikeController.dislikeController === null) {
              DislikeController.dislikeController = new DislikeController();
-              app.get("/users/:uid/dislikes", DislikeController.dislikeController.findAllTuitsDislikedByUser);
-              app.get("/tuits/:tid/dislikes", DislikeController.dislikeController.findAllUsersThatDislikedTuit);
-              app.put("/users/:uid/dislikes/:tid", DislikeController.dislikeController.userTogglesTuitDislikes);
+              app.get("/api/users/:uid/dislikes", DislikeController.dislikeController.findAllTuitsDislikedByUser);
+              app.get("/api/tuits/:tid/dislikes", DislikeController.dislikeController.findAllUsersThatDislikedTuit);
+              app.post("/api/users/:uid/dislikes/:tid", DislikeController.dislikeController.userDislikesTuit);
+              app.put("/api/users/:uid/dislikes/:tid", DislikeController.dislikeController.userTogglesTuitDislikes);
+              app.delete("/api/users/:uid/undislikes/:tid", DislikeController.dislikeController.userUnDislikesTuit);
           }
           return DislikeController.dislikeController;
       }
@@ -73,7 +75,10 @@
          const profile = req.session['profile'];
          const userId = uid === "me" && profile ?
              profile._id : uid;
-
+             if (userId === "me") {
+                res.json([])
+                return
+            }
              DislikeController.dislikeDao.findAllTuitsDislikedByUser(userId)
              .then(dislikes => {
                  const dislikesNonNullTuits = dislikes.filter(dislike => dislike.tuit);
@@ -119,4 +124,27 @@
                  res.sendStatus(404);
              }
          }
+
+        /**
+         * @param {Request} req Represents request from client, including the
+         * path parameters uid and tid representing the user that is disliking the tuit
+         * and the tuit being disliked
+         * @param {Response} res Represents response to client, including the
+         * body formatted as JSON containing the new dislike that was inserted in the
+         * database
+         */
+        userDislikesTuit = (req: Request, res: Response) =>
+        DislikeController.dislikeDao.userDislikesTuit(req.params.uid, req.params.tid)
+            .then(dislikes => res.json(dislikes));
+
+        /**
+         * @param {Request} req Represents request from client, including the
+         * path parameters uid and tid representing the user that is un-disliking
+         * the tuit and the tuit being un-disliked
+         * @param {Response} res Represents response to client, including the response
+         * of updating the dislike
+         */
+        userUnDislikesTuit = (req: Request, res: Response) =>
+            DislikeController.dislikeDao.userUndislikesTuit(req.params.uid, req.params.tid)
+                .then((status :any) => res.send(status));
 }
