@@ -9,18 +9,18 @@ import FollowControllerI from "../../interfaces/follows/FollowControllerI";
  * @class FollowController Implements RESTful Web service API for follows resource.
  * Defines the following HTTP endpoints:
  * <ul>
- *     <li>GET /users/:uid/followings to retrieve all the users whom a user follows
+ *     <li>GET /api/users/:uid/followings to retrieve all the users whom a user follows
  *     </li>
- *     <li>GET /users/:uid/followers to retrieve all users that follow a user
+ *     <li>GET /api/users/:uid/followers to retrieve all users that follow a user
  *     </li>
- *     <li>POST /users/:uid/follows/:userfollowedid to record that a user follows a user
+ *     <li>POST /api/users/:uid/follows/:userfollowedid to record that a user follows a user
  *     </li>
- *     <li>DELETE /users/:uid/unfollows/:userfollowedid to record that a user
+ *     <li>DELETE /api/users/:uid/unfollows/:userfollowedid to record that a user
  *     no longer follows a user</li>
  *     </li>
- *     <li>DELETE /users/:uid/removefollowing to record that a user
+ *     <li>DELETE /api/users/:uid/removefollowing to record that a user
  *     unfollows all other users</li>
- *      <li>DELETE /users/:uid/removefollowers to record that a user
+ *      <li>DELETE /api/users/:uid/removefollowers to record that a user
  *     removed his followers</li>
  * </ul>
  * @property {FollowDao} followDao Singleton DAO implementing likes CRUD operations
@@ -41,12 +41,12 @@ export default class FollowController implements FollowControllerI {
         if(FollowController.followController === null) {
             FollowController.followController = new FollowController();
 
-            app.post("/users/:uid/follows/:userfollowedid", FollowController.followController.userFollowsUser);
-            app.delete("/users/:uid/unfollows/:userfollowedid", FollowController.followController.userUnfollowsUser);
-            app.get("/users/:uid/followers", FollowController.followController.getUserFollowerList);
-            app.get("/users/:uid/following", FollowController.followController.getUserFollowingList);
-            app.delete("/users/:uid/removefollowing", FollowController.followController.deleteAllUserFollowingUsers);
-            app.delete("/users/:uid/removefollowers", FollowController.followController.deleteAllUserFollowers);
+            app.post("/api/users/:uid/follows/:userfollowedid", FollowController.followController.userFollowsUser);
+            app.delete("/api/users/:uid/unfollows/:userfollowedid", FollowController.followController.userUnfollowsUser);
+            app.get("/api/users/:uid/followers", FollowController.followController.getUserFollowerList);
+            app.get("/api/users/:uid/following", FollowController.followController.getUserFollowingList);
+            app.delete("/api/users/:uid/removefollowing", FollowController.followController.deleteAllUserFollowingUsers);
+            app.delete("/api/users/:uid/removefollowers", FollowController.followController.deleteAllUserFollowers);
 
         }
         return FollowController.followController;

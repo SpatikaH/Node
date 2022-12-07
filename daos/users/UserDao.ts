@@ -82,7 +82,7 @@ export default class UserDao implements UserDaoI{
     * @returns Promise To be notified when user is retrieved from the database
     */
     async findUserByCredentials(username: string, password: string): Promise<any> {
-        UserModel.findOne({username: username, password: password});
+        return UserModel.findOne({username: username, password: password});
     }
 
     /**
@@ -91,7 +91,7 @@ export default class UserDao implements UserDaoI{
      * @returns Promise To be notified when user is retrieved from the database
      */
      async findUserByUsername(username: string): Promise<any> {
-         UserModel.findOne({username});
+        return UserModel.findOne({username});
      }
 
     /**

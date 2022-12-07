@@ -33,7 +33,7 @@ export default interface TuitDaoI {
      * @param {string} username User whose tuits posted are to be retrieved
      * @returns Promise To be notified when the tuits are retrieved from the database
      */
-    findTuitsByUser(username: string): Promise<Tuit[]>;
+    findAllTuitsByUser(username: string): Promise<Tuit[]>;
 
     /**
      * Uses TuitModel to retrieve single tuit from tuits collection
@@ -47,7 +47,7 @@ export default interface TuitDaoI {
      * @param {Tuit} tuit Instance to be inserted into the database
      * @returns Promise To be notified when tuit is inserted into the database
      */
-    createTuit(tuit: Tuit): Promise<Tuit>;
+    createTuitByUser(uid: string, tuit: Tuit): Promise<Tuit>;
 
     /**
      * Updates Tuit with new values in database
@@ -70,13 +70,5 @@ export default interface TuitDaoI {
      * @returns Promise To be notified when tuits of the user are removed from the database
      */
     deleteTuitsByUsername(postedBy: string): Promise<any>;
-
-    /**
-     * Updates the likes of a tuit in the database.
-     * @param {string} tid Primary key of tuit to be modified
-     * @param {string} newStats New status representing number of likes of tuit to be modified
-     * @returns Promise To be notified when tuit is updated in the database
-     */
-    updateLikes(tid: string, newStats: any): Promise<any>;
 
 }
